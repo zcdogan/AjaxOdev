@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax Odev</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <br><br>
+                <input type="button" class="btn btn-success" id="liste" value="Listele">
+            </div>
+        </div>
+        <br><br>
+        <div class="row" id="frends">
+                
+        </div>
+    </div>
+
+    <script src="jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#liste").on("click", function () {
+                $("#frends").empty(); 
+
+                $.ajax({
+                    url: "https://randomuser.me/api/?nat=tr&results=10",
+                    method: "GET",
+                    dataType: "json",
+                    success: function (data) {
+                        var tablo = $("<table>").addClass("table table-striped table-hover");
+                        var satir = $("<tr>").append(
+                            "<th>Ad</th>" +
+                            "<th>Soyad</th>" +
+                            "<th>Fotoğraf</th>"
+                        );
+                        satir.appendTo(tablo);
+
+                        $.each(data.results, function (i, item) {
+                            var yeniSatir = $("<tr>").append(
+                                "<td>" + item.name.first + "</td>" +
+                                "<td>" + item.name.last + "</td>" +
+                                "<td><img src='" + item.picture.thumbnail + "' alt='fotoğraf'/></td>"
+                            );
+                            yeniSatir.appendTo(tablo);
+
+                            tablo.find("tr:even").css("background-color", "pink");
+                        });
+
+                        tablo.appendTo("#frends");
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
